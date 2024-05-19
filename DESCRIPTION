@@ -1,6 +1,6 @@
 Package: browserhistory
 Title: Read and Analyse Firefox' Browser History
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Stefan", "Lanz", , "slanz1137@gmail.com", role = c("aut", "cre"))
 Description: Tools to read and analyse Firefox' browser history. Support for
@@ -9,3 +9,9 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 License: MIT + file LICENSE
+Depends:
+  R (>= 4.0.0)
+Imports:
+  RSQLite,
+  rlang,
+  cli
