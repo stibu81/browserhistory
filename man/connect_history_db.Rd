@@ -4,7 +4,7 @@
 \alias{connect_history_db}
 \title{Connect to History Database}
 \usage{
-connect_history_db(root_dir, profile)
+connect_history_db(root_dir, profile = autoselect_profile(root_dir))
 }
 \arguments{
 \item{root_dir}{The root directory where Firefox' data is stored. See
@@ -12,7 +12,12 @@ connect_history_db(root_dir, profile)
 
 \item{profile}{The profile name to be used. The profile is a folder
 within the root dir. The names of the available profiles can be listed
-using \code{\link[=list_profiles]{list_profiles()}}.}
+using \code{\link[=list_profiles]{list_profiles()}}. If no profile is specified, the function
+automatically selects a profile called "default", if it is available,
+and the first available profile otherwise.}
+}
+\value{
+a database connection (class \code{SQLiteConnection}) to the history database
 }
 \description{
 Create a Connection to Firefox' history database.
@@ -25,6 +30,6 @@ This has been checked only for very few systems:
 \item{Ubuntu 22.04}{If Firefox has been installed from a deb package, the
 root directory is \verb{~/.mozilla/firefox}. (This might also be true for other
 Debian-based distributions.) If Firefox has been installed as a snap
-package, the root directory is \verb{~/snap/firefox/common/.mozilla/firefox}}
+package, the root directory is \verb{~/snap/firefox/common/.mozilla/firefox}.}
 }
 }

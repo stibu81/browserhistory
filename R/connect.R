@@ -6,7 +6,9 @@
 #'   'Details' for hints where to find this on different systems.
 #' @param profile The profile name to be used. The profile is a folder
 #'   within the root dir. The names of the available profiles can be listed
-#'   using [`list_profiles()`].
+#'   using [`list_profiles()`]. If no profile is specified, the function
+#'   automatically selects a profile called "default", if it is available,
+#'   and the first available profile otherwise.
 #'
 #' @details
 #' Where Firefox stores the history database depends on your opperating system.
@@ -16,13 +18,16 @@
 #'   \item{Ubuntu 22.04}{If Firefox has been installed from a deb package, the
 #'   root directory is `~/.mozilla/firefox`. (This might also be true for other
 #'   Debian-based distributions.) If Firefox has been installed as a snap
-#'   package, the root directory is `~/snap/firefox/common/.mozilla/firefox`}
+#'   package, the root directory is `~/snap/firefox/common/.mozilla/firefox`.}
 #' }
 #'
+#' @return
+#' a database connection (class `SQLiteConnection`) to the history database
 #'
 #' @export
 
-connect_history_db <- function(root_dir, profile) {
+connect_history_db <- function(root_dir,
+                               profile = autoselect_profile(root_dir)) {
 
   full_path <- get_hist_file_path(root_dir, profile)
 
@@ -115,4 +120,40 @@ get_profiles_file_path <- function(root_dir,
 
   full_path
 
+}
+
+
+#' Automatically Select a Profile
+#'
+#' Automatically select one of the available profiles. If a profile with the
+#' name given by the argument `name` exists, its path is returned.
+#' Otherwise, the path of the first available profile is returned.
+#'
+#' @param name character giving the name of the profile to be selected.
+#' @inheritParams list_profiles
+#'
+#' @return
+#' a character vector of length 1 giving the path to the selected profile.
+#'
+#' @seealso List all available profiles with [list_profiles()].
+#'
+#' @export
+
+autoselect_profile <- function(root_dir, name = "default") {
+
+  profiles <- list_profiles(root_dir)
+
+  if (length(profiles) == 0) {
+    cli::cli_abort("There are no profiles available.")
+  }
+
+  # if there is a profile with the name given by the argument name, return it.
+  # otherwise, return the first profile
+  profile <- if (name %in% names(profiles)) {
+    profiles[name]
+  } else {
+    profiles[1]
+  }
+
+  profile
 }
