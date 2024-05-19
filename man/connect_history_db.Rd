@@ -11,8 +11,8 @@ connect_history_db(root_dir, profile)
 'Details' for hints where to find this on different systems.}
 
 \item{profile}{The profile name to be used. The profile is a folder
-within the root dir. The names of the available profiles can be found
-in the file \code{profiles.ini}.}
+within the root dir. The names of the available profiles can be listed
+using \code{\link[=list_profiles]{list_profiles()}}.}
 }
 \description{
 Create a Connection to Firefox' history database.
