@@ -5,13 +5,13 @@
 #' @param root_dir The root directory where Firefox' data is stored. See
 #'   'Details' for hints where to find this on different systems.
 #' @param profile The profile name to be used. The profile is a folder
-#'   within the root dir. The names of the available profiles can be listed
+#'   within the root directory. The names of the available profiles can be listed
 #'   using [`list_profiles()`]. If no profile is specified, the function
 #'   automatically selects a profile called "default", if it is available,
 #'   and the first available profile otherwise.
 #'
 #' @details
-#' Where Firefox stores the history database depends on your opperating system.
+#' Where Firefox stores the history database depends on your operating system.
 #' This has been checked only for very few systems:
 #'
 #' \describe{

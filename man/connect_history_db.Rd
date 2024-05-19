@@ -11,7 +11,7 @@ connect_history_db(root_dir, profile = autoselect_profile(root_dir))
 'Details' for hints where to find this on different systems.}
 
 \item{profile}{The profile name to be used. The profile is a folder
-within the root dir. The names of the available profiles can be listed
+within the root directory. The names of the available profiles can be listed
 using \code{\link[=list_profiles]{list_profiles()}}. If no profile is specified, the function
 automatically selects a profile called "default", if it is available,
 and the first available profile otherwise.}
@@ -23,7 +23,7 @@ a database connection (class \code{SQLiteConnection}) to the history database
 Create a Connection to Firefox' history database.
 }
 \details{
-Where Firefox stores the history database depends on your opperating system.
+Where Firefox stores the history database depends on your operating system.
 This has been checked only for very few systems:
 
 \describe{
