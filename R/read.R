@@ -40,7 +40,10 @@ read_browser_history <- function(con = NULL,
   hist_combined <- moz_visits |>
     dplyr::left_join(moz_places, by = c("place_id" = "id")) |>
     dplyr::collect() |>
-    dplyr::mutate(visit_date = as.POSIXct(.data$visit_date/1e6, tz = tz))
+    dplyr::mutate(
+      visit_date = as.POSIXct(.data$visit_date/1e6, tz = tz),
+      last_visit_date = as.POSIXct(.data$last_visit_date/1e6, tz = tz)
+    )
 
   # disconnect the database if the connection has been created within this
   # function
