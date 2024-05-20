@@ -8,7 +8,8 @@ read_browser_history(
   con = NULL,
   root_dir = NULL,
   profile = autoselect_profile(root_dir),
-  tz = ""
+  tz = "",
+  raw = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ and the first available profile otherwise.}
 \item{tz}{character giving the time zone to be used for the conversion of
 the timestamps. The default value \code{""} is the current time zone.
 See \link[base:timezones]{time zones} for more information on time zones in R.}
+
+\item{raw}{logical. Should a raw table with all columns be returned?}
 }
 \value{
 a \code{tibble} with the browser history

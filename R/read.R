@@ -9,6 +9,7 @@
 #' @param tz character giving the time zone to be used for the conversion of
 #'   the timestamps. The default value `""` is the current time zone.
 #'   See [time zones][base::timezones] for more information on time zones in R.
+#' @param raw logical. Should a raw table with all columns be returned?
 #' @inheritParams list_profiles
 #' @inheritParams connect_history_db
 #'
@@ -20,7 +21,8 @@
 read_browser_history <- function(con = NULL,
                                  root_dir = NULL,
                                  profile = autoselect_profile(root_dir),
-                                 tz = "") {
+                                 tz = "",
+                                 raw = FALSE) {
 
   # if no connection is given, connect now
   local_connection <- FALSE
@@ -48,6 +50,13 @@ read_browser_history <- function(con = NULL,
   # disconnect the database if the connection has been created within this
   # function
   if (local_connection) RSQLite::dbDisconnect(con)
+
+  # simplify the table unless the raw table is requested
+  if (!raw) {
+    hist_combined <- hist_combined |>
+      dplyr::select("id", "visit_date", "url", "title", "visit_count",
+                    "last_visit_date", "description")
+  }
 
   hist_combined
 }
