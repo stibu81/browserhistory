@@ -38,9 +38,12 @@ read_browser_history <- function(con = NULL,
   # on those sites. They can be combined using the place_id
   moz_visits <- dplyr::tbl(con, "moz_historyvisits")
   moz_places <- dplyr::tbl(con, "moz_places")
+  moz_origins <- dplyr::tbl(con, "moz_origins") |>
+    dplyr::select("id", "prefix", "host")
 
   hist_combined <- moz_visits |>
     dplyr::left_join(moz_places, by = c("place_id" = "id")) |>
+    dplyr::left_join(moz_origins, by = c("origin_id" = "id")) |>
     dplyr::collect() |>
     dplyr::mutate(
       visit_date = as.POSIXct(.data$visit_date/1e6, tz = tz),
@@ -55,7 +58,7 @@ read_browser_history <- function(con = NULL,
   if (!raw) {
     hist_combined <- hist_combined |>
       dplyr::select("id", "visit_date", "url", "title", "visit_count",
-                    "last_visit_date", "description")
+                    "last_visit_date", "description", "prefix", "origin")
   }
 
   hist_combined
