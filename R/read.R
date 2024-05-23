@@ -51,8 +51,8 @@ read_browser_history <- function(con = NULL,
     hist_combined <- hist_combined |>
       dplyr::collect() |>
       dplyr::mutate(
-        visit_date = as.POSIXct(.data$visit_date/1e6, tz = tz),
-        last_visit_date = as.POSIXct(.data$last_visit_date/1e6, tz = tz)
+        visit_date = firefox_ts_to_posix(.data$visit_date, tz = tz),
+        last_visit_date = firefox_ts_to_posix(.data$last_visit_date, tz = tz)
       )
 
   # disconnect the database if the connection has been created within this
