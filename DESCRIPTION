@@ -1,6 +1,6 @@
 Package: browserhistory
 Title: Read and Analyse Firefox' Browser History
-Version: 0.0.0.9008
+Version: 0.0.0.9009
 Authors@R: 
     person("Stefan", "Lanz", , "slanz1137@gmail.com", role = c("aut", "cre"))
 Description: Tools to read and analyse Firefox' browser history. Support for

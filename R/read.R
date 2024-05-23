@@ -24,14 +24,8 @@ read_browser_history <- function(con = NULL,
                                  tz = "",
                                  raw = FALSE) {
 
-  # if no connection is given, connect now
-  local_connection <- FALSE
-  if (is.null(con)) {
-    con <- connect_history_db(root_dir, profile)
-    local_connection <- TRUE
-  } else if (!inherits(con, "SQLiteConnection") || !RSQLite::dbIsValid(con)) {
-    cli::cli_abort("con is not a valid database connection.")
-  }
+  local_connection <- connect_local(con, root_dir, profile)
+  con <- local_connection$con
 
   # the history is spread over two tables: moz_historyvisits contains the
   # timestamps, when sites were visited and moz_places contains metadata
@@ -63,7 +57,7 @@ read_browser_history <- function(con = NULL,
 
   # disconnect the database if the connection has been created within this
   # function
-  if (local_connection) RSQLite::dbDisconnect(con)
+  if (local_connection$is_local) RSQLite::dbDisconnect(con)
 
   hist_combined
 }

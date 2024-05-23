@@ -157,3 +157,25 @@ autoselect_profile <- function(root_dir, name = "default") {
 
   profile
 }
+
+
+# Ensure a connection from within a function. Either, an already existing
+# connection is returned or a new connection is created. The function also
+# returns a logical that indicates whether a local connection has been
+# created or not.
+
+connect_local <- function(con,
+                          root_dir,
+                          profile,
+                          error_call = rlang::caller_env()) {
+
+  is_local <- FALSE
+  if (is.null(con)) {
+    con <- connect_history_db(root_dir, profile)
+    is_local <- TRUE
+  } else if (!inherits(con, "SQLiteConnection") || !RSQLite::dbIsValid(con)) {
+    cli::cli_abort("con is not a valid database connection.", call = error_call)
+  }
+
+  list(con = con, is_local = is_local)
+}
