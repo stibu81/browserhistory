@@ -9,6 +9,7 @@ generate_testdata(
   root_dir = NULL,
   profile = autoselect_profile(root_dir),
   start_time,
+  end_time = Sys.time(),
   output_dir
 )
 }
@@ -26,9 +27,8 @@ using \code{\link[=list_profiles]{list_profiles()}}. If no profile is specified,
 automatically selects a profile called "default", if it is available,
 and the first available profile otherwise.}
 
-\item{start_time}{a POSIXt object that specifies the start time of the data.
-All elements of the history that are newer than this date will be included
-in the test data.}
+\item{start_time, end_time}{POSIXt objects that specifies the time interval
+for which browser history will be included in the test database.}
 
 \item{output_dir}{The directory where the test database should be
 written to. The directory must exist.}

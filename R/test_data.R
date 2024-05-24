@@ -3,9 +3,8 @@
 #' Generate a test database from a Firefox history database.
 #'
 #' @inheritParams read_browser_history
-#' @param start_time a POSIXt object that specifies the start time of the data.
-#'  All elements of the history that are newer than this date will be included
-#'  in the test data.
+#' @param start_time,end_time POSIXt objects that specifies the time interval
+#'  for which browser history will be included in the test database.
 #' @param output_dir The directory where the test database should be
 #'  written to. The directory must exist.
 #'
@@ -27,12 +26,17 @@ generate_testdata <- function(con = NULL,
                               root_dir = NULL,
                               profile = autoselect_profile(root_dir),
                               start_time,
+                              end_time = Sys.time(),
                               output_dir) {
 
   # check inputs
   rlang::check_required(start_time)
   if (!lubridate::is.POSIXt(start_time)) {
     cli::cli_abort("start_time must be a POSIXt object.")
+  }
+  rlang::check_required(end_time)
+  if (!lubridate::is.POSIXt(end_time)) {
+    cli::cli_abort("end_time must be a POSIXt object.")
   }
   rlang::check_required(output_dir)
   if (!dir.exists(output_dir)) {
@@ -51,8 +55,10 @@ generate_testdata <- function(con = NULL,
   # filter moz_visits by date, then filter the other tables for the ids that
   # are left in the filtered moz_visits.
   start_time_firefox_ts <- posix_to_firefox_ts(start_time)
+  end_time_firefox_ts <- posix_to_firefox_ts(end_time)
   moz_visits <- moz_visits |>
-    dplyr::filter(.data$visit_date > start_time_firefox_ts) |>
+    dplyr::filter(.data$visit_date > start_time_firefox_ts,
+                  .data$visit_date < end_time_firefox_ts) |>
     dplyr::collect()
   moz_places <- moz_places |>
     dplyr::filter(.data$id %in% moz_visits$place_id) |>
