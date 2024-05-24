@@ -21,7 +21,6 @@ Imports:
   stringr,
   lubridate
 Suggests:
-  devtools,
   withr,
   dbplyr,
   testthat (>= 3.0.0),
