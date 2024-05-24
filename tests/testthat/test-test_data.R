@@ -50,7 +50,7 @@ test_that("check test database", {
 test_that("test generation of test data", {
   output_dir <- file.path(tempdir(), "test_data")
   dir.create(output_dir)
-  defer(unlink(output_dir))
+  defer(unlink(output_dir, recursive = TRUE))
 
   expect_s3_class(
     generate_testdata(root_dir = test_path("..", "testdata", "firefox"),
