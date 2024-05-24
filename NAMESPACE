@@ -2,6 +2,7 @@
 
 export(autoselect_profile)
 export(connect_history_db)
+export(generate_testdata)
 export(list_profiles)
 export(read_browser_history)
 importFrom(dplyr,.data)
