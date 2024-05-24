@@ -67,6 +67,9 @@ generate_testdata <- function(con = NULL,
     dplyr::filter(.data$id %in% moz_places$origin_id) |>
     dplyr::collect()
 
+  # hide the actual visit count by overwriting with random values
+  moz_places$visit_count <- sample(1:20, nrow(moz_places), replace = TRUE)
+
   profile <- "test_profile"
   write_profiles_ini(output_dir, profile)
   write_history_db(output_dir, profile, moz_visits, moz_places, moz_origins)
