@@ -115,7 +115,7 @@ get_profiles_file_path <- function(root_dir,
   prof_file <- "profiles.ini"
   full_path <- file.path(root_dir, prof_file)
   if (!file.exists(full_path)) {
-    cli::cli_abort("The file {prof_file} does not exist.")
+    cli::cli_abort("The directory {root_dir} is not a Firefox root directory.")
   }
 
   full_path
