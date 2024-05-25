@@ -8,12 +8,12 @@
 [![R-CMD-check](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`browserhistory` offers tools to read and analyse the browser history of
-Firefox.
+browserhistory offers tools to read and analyse the browser history of
+Firefox with R. Support for other browsers might be added in the future.
 
 ## Installation
 
-You can install the development version of `browserhistory` from
+You can install the development version of browserhistory from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -54,7 +54,7 @@ In order to read the history, you need to figure out where Firefox
 stores the relevant files. The folder contains a file called
 `profiles.ini` and subfolders for one or more profiles. Use the folder
 that contains `profiles.ini` as the root directory. In the case of the
-test data contained in `browserhistory`, the structure is as follows:
+test data contained in browserhistory, the structure is as follows:
 
 ``` r
 list.files(root_dir, recursive = TRUE)
@@ -86,7 +86,7 @@ history
 #> # ℹ 3 more variables: description <chr>, prefix <chr>, host <chr>
 ```
 
-The following list gives hint on where to find the root directory on a
+The following list gives hints on where to find the root directory on a
 small number of systems:
 
 - **Ubuntu 22.04:** If Firefox has been installed from a deb package,

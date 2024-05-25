@@ -19,12 +19,13 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`browserhistory` offers tools to read and analyse the browser history of
-Firefox.
+browserhistory offers tools to read and analyse the browser history of
+Firefox with R. Support for other browsers might be added in the future.
+
 
 ## Installation
 
-You can install the development version of `browserhistory` from
+You can install the development version of browserhistory from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -49,13 +50,12 @@ history
 In order to read the history, you need to figure out where Firefox stores the
 relevant files. The folder contains a file called `profiles.ini` and subfolders
 for one or more profiles. Use the folder that  contains `profiles.ini` as
-the root directory. In the case of the test data contained in `browserhistory`,
+the root directory. In the case of the test data contained in browserhistory,
 the structure is as follows:
 
 ```{r}
 list.files(root_dir, recursive = TRUE)
 ```
-
 
 `read_firefox_history()` will automatically select the
 default profiles, but when there are several profiles and you want to read
@@ -67,7 +67,7 @@ history <- read_browser_history(root_dir = root_dir, profile = "test_profile")
 history
 ```
 
-The following list gives hint on where to find the root directory on a small
+The following list gives hints on where to find the root directory on a small
 number of systems:
 
 * **Ubuntu 22.04:** If Firefox has been installed from a deb package, the root
