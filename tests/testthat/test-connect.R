@@ -2,7 +2,7 @@ library(glue)
 library(RSQLite)
 library(withr)
 
-root_dir <- normalizePath(test_path("..", "testdata", "firefox"))
+root_dir <- normalizePath(get_test_root_dir())
 
 test_that("test list_profiles()", {
   expect_equal(list_profiles(root_dir), c(default = "test_profile"))

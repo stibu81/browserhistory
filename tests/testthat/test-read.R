@@ -4,7 +4,7 @@ library(dplyr, warn.conflicts = FALSE)
 library(RSQLite)
 library(lubridate, warn.conflicts = FALSE)
 
-root_dir <- normalizePath(test_path("..", "testdata", "firefox"))
+root_dir <- normalizePath(get_test_root_dir())
 ref_data <- readRDS(test_path("..", "ref", "firefox_ref.rds"))
 simple_names <- c("id", "visit_date", "url", "title", "visit_count",
                   "last_visit_date", "description", "prefix", "host")

@@ -83,6 +83,15 @@ generate_testdata <- function(con = NULL,
 }
 
 
+#' Get the Root Directory of the Test Data
+#'
+#' @export
+
+get_test_root_dir <- function() {
+  system.file("extdata", "firefox", package = "browserhistory")
+}
+
+
 # write ini file with the test profile
 write_profiles_ini <- function(output_dir, profile) {
   ini_file <- file.path(output_dir, "profiles.ini")

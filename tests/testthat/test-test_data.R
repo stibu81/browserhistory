@@ -3,8 +3,10 @@ library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(withr)
 
+root_dir <- get_test_root_dir()
+
 test_that("check profiles.ini", {
-  ini_file <- test_path("..", "testdata", "firefox", "profiles.ini")
+  ini_file <- file.path(root_dir, "profiles.ini")
   expect_true(file.exists(ini_file))
   ini <- read.ini(ini_file)
   expect_named(ini, c("Profile0", "General"))
@@ -14,7 +16,7 @@ test_that("check profiles.ini", {
 
 
 test_that("check test database", {
-  db_file <- test_path("..", "testdata", "firefox", "test_profile", "places.sqlite")
+  db_file <- file.path(root_dir, "test_profile", "places.sqlite")
   expect_true(file.exists(db_file))
   expect_silent(con <- dbConnect(SQLite(), db_file))
   expect_true(dbIsValid(con))
@@ -53,7 +55,7 @@ test_that("test generation of test data", {
   defer(unlink(output_dir, recursive = TRUE))
 
   expect_s3_class(
-    generate_testdata(root_dir = test_path("..", "testdata", "firefox"),
+    generate_testdata(root_dir = root_dir,
                       start_time = as.POSIXct("2024-05-24 17:42:00"),
                       end_time = as.POSIXct("2024-05-24 17:46:00"),
                       output_dir = output_dir),
@@ -65,7 +67,7 @@ test_that("test generation of test data", {
 
   # check contents of the ini file
   expect_equal(read.ini(file.path(output_dir, "profiles.ini")),
-               read.ini(test_path("..", "testdata", "firefox", "profiles.ini")))
+               read.ini(file.path(root_dir, "profiles.ini")))
 
   # the following tests do not work on github for some reason. The tables seem
   # to be empty. Since this functionality is not necessary for users of the
@@ -74,7 +76,7 @@ test_that("test generation of test data", {
   skip_on_ci()
 
   # check contents of the database
-  con_orig <- dbConnect(SQLite(), test_path("..", "testdata", "firefox", "test_profile", "places.sqlite"))
+  con_orig <- dbConnect(SQLite(), file.path(root_dir, "test_profile", "places.sqlite"))
   con_test <- dbConnect(SQLite(), file.path(output_dir, "test_profile", "places.sqlite"))
   defer({
     dbDisconnect(con_orig)

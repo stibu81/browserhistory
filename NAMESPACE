@@ -3,6 +3,7 @@
 export(autoselect_profile)
 export(connect_history_db)
 export(generate_testdata)
+export(get_test_root_dir)
 export(list_profiles)
 export(read_browser_history)
 importFrom(dplyr,.data)
