@@ -5,7 +5,9 @@
 #' specifying a root directory and (optionally).
 #'
 #' @param con a connection to a history database created with
-#'   [`connect_history_db()`].
+#'   [`connect_history_db()`]. Instead of passing a connection, you can also
+#'   specify a root directory and (optionally) a profile and the function
+#'   will build up the connection automatically.
 #' @param tz character giving the time zone to be used for the conversion of
 #'   the timestamps. The default value `""` is the current time zone.
 #'   See [time zones][base::timezones] for more information on time zones in R.

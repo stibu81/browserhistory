@@ -14,7 +14,9 @@ read_browser_history(
 }
 \arguments{
 \item{con}{a connection to a history database created with
-\code{\link[=connect_history_db]{connect_history_db()}}.}
+\code{\link[=connect_history_db]{connect_history_db()}}. Instead of passing a connection, you can also
+specify a root directory and (optionally) a profile and the function
+will build up the connection automatically.}
 
 \item{root_dir}{The root directory where Firefox' data is stored. See
 'Details' in the documentation of \code{\link[=connect_history_db]{connect_history_db()}}

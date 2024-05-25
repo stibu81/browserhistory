@@ -4,9 +4,14 @@
 \name{browserhistory-package}
 \alias{browserhistory}
 \alias{browserhistory-package}
-\title{browserhistory: Read and Analyse Firefox' Browser History}
+\title{Read and Analyse Firefox' Browser History}
 \description{
-Tools to read and analyse Firefox' browser history. Support for other browsers may be added in the future.
+This package provides functionality to read and analyse the browser history
+of Firefox. The history is stored in a SQLite database and can be accessed
+using \code{\link[=read_browser_history]{read_browser_history()}}.
+}
+\details{
+Other browsers might be supported in the future.
 }
 \author{
 \strong{Maintainer}: Stefan Lanz \email{slanz1137@gmail.com}
