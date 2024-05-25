@@ -7,7 +7,7 @@
 
 [![R-CMD-check](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stibu81/browserhistory/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/stibu81/browserhistory/branch/master/graph/badge.svg)](https://app.codecov.io/gh/stibu81/browserhistory?branch=main)
+coverage](https://codecov.io/gh/stibu81/browserhistory/branch/main/graph/badge.svg)](https://app.codecov.io/gh/stibu81/browserhistory?branch=main)
 <!-- badges: end -->
 
 browserhistory offers tools to read and analyse the browser history of
