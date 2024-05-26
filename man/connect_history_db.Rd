@@ -31,5 +31,8 @@ This has been checked only for very few systems:
 root directory is \verb{~/.mozilla/firefox}. (This might also be true for other
 Debian-based distributions.) If Firefox has been installed as a snap
 package, the root directory is \verb{~/snap/firefox/common/.mozilla/firefox}.}
+\item{Windows 10/11}{The root directory is
+\verb{C:\\Users\\<username>\\AppData\\Roaming\\Mozilla\\Firefox}, where
+\verb{<username>} must be replaced by your user name.}
 }
 }

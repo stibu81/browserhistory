@@ -16,9 +16,12 @@
 #'
 #' \describe{
 #'   \item{Ubuntu 22.04}{If Firefox has been installed from a deb package, the
-#'   root directory is `~/.mozilla/firefox`. (This might also be true for other
-#'   Debian-based distributions.) If Firefox has been installed as a snap
-#'   package, the root directory is `~/snap/firefox/common/.mozilla/firefox`.}
+#'    root directory is `~/.mozilla/firefox`. (This might also be true for other
+#'    Debian-based distributions.) If Firefox has been installed as a snap
+#'    package, the root directory is `~/snap/firefox/common/.mozilla/firefox`.}
+#'   \item{Windows 10/11}{The root directory is
+#'    `C:\Users\<username>\AppData\Roaming\Mozilla\Firefox`, where
+#'    `<username>` must be replaced by your user name.}
 #' }
 #'
 #' @return
