@@ -2,6 +2,7 @@ library(ini)
 library(RSQLite)
 library(dplyr, warn.conflicts = FALSE)
 library(withr)
+library(glue)
 
 root_dir <- get_test_root_dir()
 
@@ -12,6 +13,7 @@ test_that("check profiles.ini", {
   expect_named(ini, c("Profile0", "General"))
   expect_equal(ini$Profile0$Name, "default")
   expect_equal(ini$Profile0$Path, "test_profile")
+  expect_equal(ini$Profile0$Default, "1")
 })
 
 
@@ -91,4 +93,40 @@ test_that("test generation of test data", {
   expect_equal(dbReadTable(con_test, "moz_historyvisits"),
                dbReadTable(con_orig, "moz_historyvisits"))
 
+  # check that overwriting of the testdata works.
+  expect_s3_class(
+    generate_testdata(root_dir = root_dir,
+                      start_time = as.POSIXct("2024-05-24 17:42:00"),
+                      end_time = as.POSIXct("2024-05-24 17:46:00"),
+                      output_dir = output_dir),
+    "tbl_df"
+  )
+
+})
+
+
+test_that("test generate_testdata() errors", {
+  expect_error(
+    generate_testdata(root_dir = root_dir,
+                      start_time = "2024-05-24 17:42:00",
+                      end_time = as.POSIXct("2024-05-24 17:46:00"),
+                      output_dir = tempdir()),
+    "start_time must be a POSIXt object."
+  )
+  expect_error(
+    generate_testdata(root_dir = root_dir,
+                      start_time = as.POSIXct("2024-05-24 17:42:00"),
+                      end_time = "2024-05-24 17:46:00",
+                      output_dir = tempdir()),
+    "end_time must be a POSIXt object."
+  )
+  skip_on_os("windows")
+  output_dir <- file.path(tempdir(), "doesnotexist")
+  expect_error(
+    generate_testdata(root_dir = root_dir,
+                      start_time = as.POSIXct("2024-05-24 17:42:00"),
+                      end_time = as.POSIXct("2024-05-24 17:46:00"),
+                      output_dir = output_dir),
+    glue("The output directory {output_dir} does not exist.")
+  )
 })
