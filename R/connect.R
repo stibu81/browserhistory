@@ -63,7 +63,6 @@ get_hist_file_path <- function(root_dir,
   }
 
   full_path
-
 }
 
 
@@ -78,7 +77,9 @@ get_hist_file_path <- function(root_dir,
 #' @return
 #' a named vector where the values are the path to the profiles and the names
 #' are the names of the profiles. The path must be passed to
-#' [`connect_history_db()`] to build up a connection.
+#' [`connect_history_db()`] to build up a connection. The index of the default
+#' profile is returned as an attribute `"default"`. If no profile is marked as
+#' default, the attribute is set to `NA`.
 #'
 #' @export
 
@@ -96,6 +97,18 @@ list_profiles <- function(root_dir) {
   # the names the profile name.
   profile_paths <- vapply(profiles, getElement, character(1), name = "Path")
   names(profile_paths) <- vapply(profiles, getElement, character(1), name = "Name")
+
+  # add an attribute that contains the index of the default profile. If no
+  # profile is marked as default, the attribute is set to NA.
+  default_profile <- vapply(profiles, is_default_profile,
+                            logical(1), USE.NAMES = FALSE) |>
+    which()
+  if (length(default_profile) > 1) {
+    cli::cli_warn("There are multiple profiles marked as default. The first one is used.")
+  }
+  if (length(default_profile) == 0) default_profile <- NA_integer_
+
+  attr(profile_paths, "default") <- default_profile
 
   profile_paths
 }
@@ -119,17 +132,24 @@ get_profiles_file_path <- function(root_dir,
   }
 
   full_path
+}
 
+
+# helper function that determines for a profile, whether it is the default
+# profile, i.e., whether it has an attribute Default set to 1.
+is_default_profile <- function(profile) {
+  "Default" %in% names(profile) && profile["Default"] == "1"
 }
 
 
 #' Automatically Select a Profile
 #'
-#' Automatically select one of the available profiles. If a profile with the
-#' name given by the argument `name` exists, its path is returned.
-#' Otherwise, the path of the first available profile is returned.
+#' Automatically select one of the available profiles. If a profile is marked
+#' as default (`Default=1`), its path is returned.
+#' Otherwise, the path of the profile labelled `Profile0` is returned. If that
+#' also does not exist, the first profile is returned. If no profiles are
+#' defined, the function throws an error.
 #'
-#' @param name character giving the name of the profile to be selected.
 #' @inheritParams list_profiles
 #'
 #' @return
@@ -139,7 +159,7 @@ get_profiles_file_path <- function(root_dir,
 #'
 #' @export
 
-autoselect_profile <- function(root_dir, name = "default") {
+autoselect_profile <- function(root_dir) {
 
   profiles <- list_profiles(root_dir)
 
@@ -147,10 +167,13 @@ autoselect_profile <- function(root_dir, name = "default") {
     cli::cli_abort("There are no profiles available.")
   }
 
-  # if there is a profile with the name given by the argument name, return it.
-  # otherwise, return the first profile
-  profile <- if (name %in% names(profiles)) {
-    profiles[name]
+  # if there is a profile marked as default, return it. Otherwise, return the
+  # first available profile("Profile0").
+  i_default <- attr(profiles, "default")
+  profile <- if (!is.na(i_default)) {
+    profiles[i_default]
+  } else if ("Profile0" %in% names(profiles)) {
+    profiles["Profile0"]
   } else {
     profiles[1]
   }

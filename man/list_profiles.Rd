@@ -14,7 +14,9 @@ for hints where to find this on different systems.}
 \value{
 a named vector where the values are the path to the profiles and the names
 are the names of the profiles. The path must be passed to
-\code{\link[=connect_history_db]{connect_history_db()}} to build up a connection.
+\code{\link[=connect_history_db]{connect_history_db()}} to build up a connection. The index of the default
+profile is returned as an attribute \code{"default"}. If no profile is marked as
+default, the attribute is set to \code{NA}.
 }
 \description{
 List all the profiles that are contained in a root directory.

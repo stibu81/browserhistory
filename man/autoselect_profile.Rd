@@ -4,22 +4,22 @@
 \alias{autoselect_profile}
 \title{Automatically Select a Profile}
 \usage{
-autoselect_profile(root_dir, name = "default")
+autoselect_profile(root_dir)
 }
 \arguments{
 \item{root_dir}{The root directory where Firefox' data is stored. See
 'Details' in the documentation of \code{\link[=connect_history_db]{connect_history_db()}}
 for hints where to find this on different systems.}
-
-\item{name}{character giving the name of the profile to be selected.}
 }
 \value{
 a character vector of length 1 giving the path to the selected profile.
 }
 \description{
-Automatically select one of the available profiles. If a profile with the
-name given by the argument \code{name} exists, its path is returned.
-Otherwise, the path of the first available profile is returned.
+Automatically select one of the available profiles. If a profile is marked
+as default (\code{Default=1}), its path is returned.
+Otherwise, the path of the profile labelled \code{Profile0} is returned. If that
+also does not exist, the first profile is returned. If no profiles are
+defined, the function throws an error.
 }
 \seealso{
 List all available profiles with \code{\link[=list_profiles]{list_profiles()}}.

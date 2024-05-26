@@ -5,7 +5,9 @@ library(withr)
 root_dir <- get_test_root_dir()
 
 test_that("test list_profiles()", {
-  expect_equal(list_profiles(root_dir), c(default = "test_profile"))
+  expect_equal(list_profiles(root_dir), c(default = "test_profile"),
+               ignore_attr = TRUE)
+  expect_equal(attr(list_profiles(root_dir), "default"), 1L)
 })
 
 test_that("test list_profiles() errors", {
@@ -20,8 +22,6 @@ test_that("test list_profiles() errors", {
 
 test_that("test auto_select_profile()", {
   expect_equal(autoselect_profile(root_dir), c(default = "test_profile"))
-  expect_equal(autoselect_profile(root_dir, "default"), c(default = "test_profile"))
-  expect_equal(autoselect_profile(root_dir, "nonexistent"), c(default = "test_profile"))
 })
 
 test_that("test auto_select_profile() errors", {
