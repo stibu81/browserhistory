@@ -10,7 +10,7 @@ test_that("check profiles.ini", {
   ini_file <- file.path(root_dir, "profiles.ini")
   expect_true(file.exists(ini_file))
   ini <- read.ini(ini_file)
-  expect_named(ini, c("Profile0", "General"))
+  expect_named(ini, c("Profile1", "Profile0", "General"))
   expect_equal(ini$Profile0$Name, "default")
   expect_equal(ini$Profile0$Path, "test_profile")
   expect_equal(ini$Profile0$Default, "1")

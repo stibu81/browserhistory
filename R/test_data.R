@@ -70,16 +70,19 @@ generate_testdata <- function(con = NULL,
   # hide the actual visit count by overwriting with random values
   moz_places$visit_count <- sample(1:20, nrow(moz_places), replace = TRUE)
 
-  profile <- "test_profile"
-  write_profiles_ini(output_dir, profile)
-  write_history_db(output_dir, profile, moz_visits, moz_places, moz_origins)
+  write_profiles_ini(output_dir)
+  write_history_db(output_dir, "test_profile", moz_visits, moz_places, moz_origins)
+  # write an empty file to the bad_profile to simulate a profile without history
+  some_file <- file.path(output_dir, "bad_profile", "somefile")
+  if (!dir.exists(dirname(some_file))) dir.create(dirname(some_file))
+  writeLines("", some_file)
 
   # disconnect the database if the connection has been created within this
   # function
   if (local_connection$is_local) RSQLite::dbDisconnect(con)
 
     # read data back from the database that was just created.
-  read_browser_history(root_dir = output_dir, profile = profile)
+  read_browser_history(root_dir = output_dir, profile = "test_profile")
 }
 
 
@@ -93,13 +96,18 @@ get_test_root_dir <- function() {
 
 
 # write ini file with the test profile
-write_profiles_ini <- function(output_dir, profile) {
+write_profiles_ini <- function(output_dir) {
   ini_file <- file.path(output_dir, "profiles.ini")
   contents <- list(
+    Profile1 = list(
+      Name = "other",
+      IsRelative = 1,
+      Path = "bad_profile"
+    ),
     Profile0 = list(
       Name = "default",
       IsRelative = 1,
-      Path = profile,
+      Path = "test_profile",
       Default = 1
     ),
     General = list(
@@ -121,6 +129,7 @@ write_history_db <- function(output_dir, profile,
   if (file.exists(hist_file)) {
     file.remove(hist_file)
   }
+
   con <- RSQLite::dbConnect(RSQLite::SQLite(), hist_file)
 
   RSQLite::dbWriteTable(con, "moz_historyvisits", moz_visits)

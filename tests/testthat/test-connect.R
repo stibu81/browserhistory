@@ -5,9 +5,10 @@ library(withr)
 root_dir <- get_test_root_dir()
 
 test_that("test list_profiles()", {
-  expect_equal(list_profiles(root_dir), c(default = "test_profile"),
+  expect_equal(list_profiles(root_dir),
+               c(other = "bad_profile", default = "test_profile"),
                ignore_attr = TRUE)
-  expect_equal(attr(list_profiles(root_dir), "default"), 1L)
+  expect_equal(attr(list_profiles(root_dir), "default"), 2L)
 })
 
 test_that("test list_profiles() errors", {
@@ -52,8 +53,8 @@ test_that("test connect_history_db() errors", {
                glue("The root directory {bad_dir} does not exist."))
   expect_error(connect_history_db(tempdir()),
                glue("The directory {tempdir()} is not a Firefox root directory."))
-  expect_error(connect_history_db(root_dir, profile = "bad_profile"),
-               "The profile bad_profile does not exist.")
+  expect_error(connect_history_db(root_dir, profile = "inexistant_profile"),
+               "The profile inexistant_profile does not exist.")
 })
 
 
