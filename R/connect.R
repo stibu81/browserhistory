@@ -108,6 +108,7 @@ list_profiles <- function(root_dir) {
     which()
   if (length(default_profile) > 1) {
     cli::cli_warn("There are multiple profiles marked as default. The first one is used.")
+    default_profile <- default_profile[1]
   }
   if (length(default_profile) == 0) default_profile <- NA_integer_
 
@@ -149,9 +150,8 @@ is_default_profile <- function(profile) {
 #'
 #' Automatically select one of the available profiles. If a profile is marked
 #' as default (`Default=1`), its path is returned.
-#' Otherwise, the path of the profile labelled `Profile0` is returned. If that
-#' also does not exist, the first profile is returned. If no profiles are
-#' defined, the function throws an error.
+#' Otherwise, the first profile defined in the ini-file is returned.
+#' If no profiles are defined, the function throws an error.
 #'
 #' @inheritParams list_profiles
 #'
@@ -171,12 +171,10 @@ autoselect_profile <- function(root_dir) {
   }
 
   # if there is a profile marked as default, return it. Otherwise, return the
-  # first available profile("Profile0").
+  # first available profile.
   i_default <- attr(profiles, "default")
   profile <- if (!is.na(i_default)) {
     profiles[i_default]
-  } else if ("Profile0" %in% names(profiles)) {
-    profiles["Profile0"]
   } else {
     profiles[1]
   }

@@ -17,9 +17,8 @@ a character vector of length 1 giving the path to the selected profile.
 \description{
 Automatically select one of the available profiles. If a profile is marked
 as default (\code{Default=1}), its path is returned.
-Otherwise, the path of the profile labelled \code{Profile0} is returned. If that
-also does not exist, the first profile is returned. If no profiles are
-defined, the function throws an error.
+Otherwise, the first profile defined in the ini-file is returned.
+If no profiles are defined, the function throws an error.
 }
 \seealso{
 List all available profiles with \code{\link[=list_profiles]{list_profiles()}}.
