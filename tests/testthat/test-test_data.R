@@ -67,6 +67,15 @@ test_that("test generation of test data", {
   expect_true(file.exists(file.path(output_dir, "profiles.ini")))
   expect_true(file.exists(file.path(output_dir, "test_profile", "places.sqlite")))
 
+  # check that overwriting of the testdata works.
+  expect_s3_class(
+    generate_testdata(root_dir = root_dir,
+                      start_time = as.POSIXct("2024-05-24 17:42:00"),
+                      end_time = as.POSIXct("2024-05-24 17:46:00"),
+                      output_dir = output_dir),
+    "tbl_df"
+  )
+
   # check contents of the ini file
   expect_equal(read.ini(file.path(output_dir, "profiles.ini")),
                read.ini(file.path(root_dir, "profiles.ini")))
@@ -92,15 +101,6 @@ test_that("test generation of test data", {
                dbReadTable(con_orig, "moz_origins"))
   expect_equal(dbReadTable(con_test, "moz_historyvisits"),
                dbReadTable(con_orig, "moz_historyvisits"))
-
-  # check that overwriting of the testdata works.
-  expect_s3_class(
-    generate_testdata(root_dir = root_dir,
-                      start_time = as.POSIXct("2024-05-24 17:42:00"),
-                      end_time = as.POSIXct("2024-05-24 17:46:00"),
-                      output_dir = output_dir),
-    "tbl_df"
-  )
 
 })
 
