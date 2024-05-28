@@ -4,12 +4,13 @@
 \alias{list_profiles}
 \title{List the Available Profiles}
 \usage{
-list_profiles(root_dir)
+list_profiles(root_dir = guess_root_dir())
 }
 \arguments{
 \item{root_dir}{The root directory where Firefox' data is stored. See
 'Details' in the documentation of \code{\link[=connect_history_db]{connect_history_db()}}
-for hints where to find this on different systems.}
+for hints where to find this on different systems. If omitted,
+the function tries to guess the root directory using \code{\link[=guess_root_dir]{guess_root_dir()}}.}
 }
 \value{
 a named vector where the values are the path to the profiles and the names

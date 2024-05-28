@@ -4,11 +4,15 @@
 \alias{connect_history_db}
 \title{Connect to History Database}
 \usage{
-connect_history_db(root_dir, profile = autoselect_profile(root_dir))
+connect_history_db(
+  root_dir = guess_root_dir(),
+  profile = autoselect_profile(root_dir)
+)
 }
 \arguments{
 \item{root_dir}{The root directory where Firefox' data is stored. See
-'Details' for hints where to find this on different systems.}
+'Details' for hints where to find this on different systems. If omitted,
+the function tries to guess the root directory using \code{\link[=guess_root_dir]{guess_root_dir()}}.}
 
 \item{profile}{The profile name to be used. The profile is a folder
 within the root directory. The names of the available profiles can be listed

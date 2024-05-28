@@ -6,7 +6,7 @@
 \usage{
 generate_testdata(
   con = NULL,
-  root_dir = NULL,
+  root_dir = guess_root_dir(),
   profile = autoselect_profile(root_dir),
   start_time,
   end_time = Sys.time(),
@@ -21,7 +21,8 @@ will build up the connection automatically.}
 
 \item{root_dir}{The root directory where Firefox' data is stored. See
 'Details' in the documentation of \code{\link[=connect_history_db]{connect_history_db()}}
-for hints where to find this on different systems.}
+for hints where to find this on different systems. If omitted,
+the function tries to guess the root directory using \code{\link[=guess_root_dir]{guess_root_dir()}}.}
 
 \item{profile}{The profile name to be used. The profile is a folder
 within the root directory. The names of the available profiles can be listed

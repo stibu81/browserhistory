@@ -21,7 +21,7 @@
 #' @export
 
 read_browser_history <- function(con = NULL,
-                                 root_dir = NULL,
+                                 root_dir = guess_root_dir(),
                                  profile = autoselect_profile(root_dir),
                                  tz = "",
                                  raw = FALSE) {

@@ -3,7 +3,8 @@
 #' Create a Connection to Firefox' history database.
 #'
 #' @param root_dir The root directory where Firefox' data is stored. See
-#'   'Details' for hints where to find this on different systems.
+#'   'Details' for hints where to find this on different systems. If omitted,
+#'   the function tries to guess the root directory using [`guess_root_dir()`].
 #' @param profile The profile name to be used. The profile is a folder
 #'   within the root directory. The names of the available profiles can be listed
 #'   using [`list_profiles()`]. If no profile is specified, the function
@@ -75,7 +76,8 @@ get_hist_file_path <- function(root_dir,
 #'
 #' @param root_dir The root directory where Firefox' data is stored. See
 #'   'Details' in the documentation of [`connect_history_db()`]
-#'   for hints where to find this on different systems.
+#'   for hints where to find this on different systems. If omitted,
+#'   the function tries to guess the root directory using [`guess_root_dir()`].
 #'
 #' @return
 #' a named vector where the values are the path to the profiles and the names
@@ -162,7 +164,7 @@ is_default_profile <- function(profile) {
 #'
 #' @export
 
-autoselect_profile <- function(root_dir) {
+autoselect_profile <- function(root_dir = guess_root_dir()) {
 
   profiles <- list_profiles(root_dir)
 
@@ -206,6 +208,15 @@ connect_local <- function(con,
 
 
 #' Try to Guess the Directory Where the Firefox History Is Stored
+#'
+#' Try to guess the directory, where Firefox stores the history database. This
+#' works according to the rules laid out in the documentation of
+#' [`connect_history_db()`]. If it returns a directory path, this path is
+#' guaranteed to exist. If guessing is unsuccessful, `NA` is returned.
+#'
+#' @returns
+#' a character vector with the path to the root directory or `NA` if
+#' guessing was unsuccessful.
 #'
 #' @export
 

@@ -13,6 +13,7 @@ Language: en-GB
 Depends:
   R (>= 4.0.0)
 Imports:
+  utils,
   RSQLite,
   rlang,
   cli,

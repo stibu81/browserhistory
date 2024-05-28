@@ -23,7 +23,7 @@
 #' @export
 
 generate_testdata <- function(con = NULL,
-                              root_dir = NULL,
+                              root_dir = guess_root_dir(),
                               profile = autoselect_profile(root_dir),
                               start_time,
                               end_time = Sys.time(),
