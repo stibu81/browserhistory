@@ -60,7 +60,8 @@ test data contained in browserhistory, the structure is as follows:
 
 ``` r
 list.files(root_dir, recursive = TRUE)
-#> [1] "profiles.ini"               "test_profile/places.sqlite"
+#> [1] "bad_profile/somefile"       "profiles.ini"              
+#> [3] "test_profile/places.sqlite"
 ```
 
 `read_firefox_history()` will automatically select the default profiles,
@@ -91,10 +92,10 @@ history
 The following list gives hints on where to find the root directory on a
 small number of systems:
 
-- **Ubuntu 22.04:** If Firefox has been installed from a deb package,
-  the root directory is `⁠~/.mozilla/firefox`. (This might also be true
-  for other Debian-based distributions.) If Firefox has been installed
-  as a snap package, the root directory is
+- **Ubuntu 20.04/22.04:** If Firefox has been installed from a deb
+  package, the root directory is `⁠~/.mozilla/firefox`. (This might also
+  be true for other Debian-based distributions.) If Firefox has been
+  installed as a snap package, the root directory is
   `⁠~/snap/firefox/common/.mozilla/firefox`⁠.
 - **Windows 10/11:** The root directory is
   `⁠C:\Users\<username>\AppData\Roaming\Mozilla\Firefox`, where

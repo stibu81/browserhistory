@@ -15,7 +15,7 @@
 #' This has been checked only for very few systems:
 #'
 #' \describe{
-#'   \item{Ubuntu 22.04}{If Firefox has been installed from a deb package, the
+#'   \item{Ubuntu 20.04/22.04}{If Firefox has been installed from a deb package, the
 #'    root directory is `~/.mozilla/firefox`. (This might also be true for other
 #'    Debian-based distributions.) If Firefox has been installed as a snap
 #'    package, the root directory is `~/snap/firefox/common/.mozilla/firefox`.}
@@ -29,7 +29,7 @@
 #'
 #' @export
 
-connect_history_db <- function(root_dir,
+connect_history_db <- function(root_dir = guess_root_dir(),
                                profile = autoselect_profile(root_dir)) {
 
   full_path <- get_hist_file_path(root_dir, profile)
@@ -86,7 +86,7 @@ get_hist_file_path <- function(root_dir,
 #'
 #' @export
 
-list_profiles <- function(root_dir) {
+list_profiles <- function(root_dir = guess_root_dir()) {
 
   full_path <- get_profiles_file_path(root_dir)
 
@@ -202,4 +202,32 @@ connect_local <- function(con,
   }
 
   list(con = con, is_local = is_local)
+}
+
+
+#' Try to Guess the Directory Where the Firefox History Is Stored
+#'
+#' @export
+
+guess_root_dir <- function() {
+
+  system <- tolower(Sys.info()["sysname"])
+
+  if (system == "linux") {
+    # for Ubuntu, try the snap folder first
+    if (stringr::str_detect(utils::osVersion, "Ubuntu")) {
+      root_dir <- "~/snap/firefox/common/.mozilla/firefox"
+      if (dir.exists(root_dir)) return(root_dir)
+    }
+
+    root_dir <- "~/.mozilla/firefox"
+    if (dir.exists(root_dir)) return(root_dir)
+
+  } else if (system == "windows") {
+    app_dir <- Sys.getenv("APPDATA")
+    root_dir <- file.path(app_dir, "Mozilla", "Firefox")
+    if (dir.exists(root_dir)) return(root_dir)
+  }
+
+  return(NA_character_)
 }

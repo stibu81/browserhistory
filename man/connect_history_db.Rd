@@ -27,7 +27,7 @@ Where Firefox stores the history database depends on your operating system.
 This has been checked only for very few systems:
 
 \describe{
-\item{Ubuntu 22.04}{If Firefox has been installed from a deb package, the
+\item{Ubuntu 20.04/22.04}{If Firefox has been installed from a deb package, the
 root directory is \verb{~/.mozilla/firefox}. (This might also be true for other
 Debian-based distributions.) If Firefox has been installed as a snap
 package, the root directory is \verb{~/snap/firefox/common/.mozilla/firefox}.}
