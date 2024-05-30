@@ -27,3 +27,24 @@ test_that("test connect_local() errors", {
     "con is not a valid database connection."
   )
 })
+
+
+test_that("test is_locked()", {
+  con <- connect_history_db(root_dir)
+  defer(dbDisconnect(con))
+  expect_false(is_locked(con))
+
+  # set the busy timeout to zero to make the test run fast
+  RSQLite::sqliteSetBusyHandler(con, 0)
+
+  # lock the database
+  con2 <- connect_and_lock(root_dir)
+  defer(dbDisconnect(con2))
+  expect_true(is_locked(con))
+  dbRollback(con2)
+
+  # other errors should not return TRUE
+  dbBegin(con2)
+  dbExecute(con2, "DROP TABLE moz_historyvisits")
+  expect_false(is_locked(con2))
+})

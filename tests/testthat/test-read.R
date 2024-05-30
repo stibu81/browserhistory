@@ -32,3 +32,18 @@ test_that("test read_browser_history()", {
   expect_equal(tz(history$visit_date), "UTC")
   expect_equal(tz(history$last_visit_date), "UTC")
 })
+
+
+test_that("test read_browser_history() errors", {
+  # try to read from locked database
+  con <- connect_history_db(root_dir)
+  defer(dbDisconnect(con))
+  # set the busy timeout to zero to make the test run fast
+  RSQLite::sqliteSetBusyHandler(con, 0)
+  con2 <- connect_and_lock(root_dir)
+  defer(dbDisconnect(con2))
+  expect_error(
+    read_browser_history(con),
+    "The database is locked. Close Firefox before reading the history."
+  )
+})

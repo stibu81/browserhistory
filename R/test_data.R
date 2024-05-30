@@ -46,6 +46,12 @@ generate_testdata <- function(con = NULL,
   local_connection <- connect_local(con, root_dir, profile)
   con <- local_connection$con
 
+  if (is_locked(con)) {
+    cli::cli_abort(
+      "The database is locked. Close Firefox before reading the history."
+    )
+  }
+
   # read the relevant tables
   moz_visits <- dplyr::tbl(con, "moz_historyvisits")
   moz_places <- dplyr::tbl(con, "moz_places")

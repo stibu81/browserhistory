@@ -73,3 +73,34 @@ connect_local <- function(con,
   list(con = con, is_local = is_local)
 }
 
+
+# check, whether database is locked. This can happen, when Firefox is running.
+is_locked <- function(con) {
+  tryCatch({
+    dplyr::tbl(con, "moz_historyvisits")
+    FALSE
+  }, error = function(e) {
+    if ("parent" %in% names(e)) {
+      stringr::str_detect(as.character(e$parent), "database is locked")
+    } else {
+      FALSE
+    }
+  })
+}
+
+
+# for testing purposes: connect to database and lock it
+connect_and_lock <- function(root_dir, profile = autoselect_profile(root_dir)) {
+
+  full_path <- get_hist_file_path(root_dir, profile)
+
+  # open database in read/write mode
+  con <- suppressWarnings(
+    RSQLite::dbConnect(RSQLite::SQLite(), full_path)
+  )
+
+  # begin an exclusive transaction. This locks the database.
+  RSQLite::dbExecute(con, "BEGIN EXCLUSIVE TRANSACTION;")
+
+  con
+}

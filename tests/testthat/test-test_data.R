@@ -120,6 +120,22 @@ test_that("test generate_testdata() errors", {
                       output_dir = tempdir()),
     "end_time must be a POSIXt object."
   )
+
+  # try to create test data from locked database
+  con <- connect_history_db(root_dir)
+  defer(dbDisconnect(con))
+  # set the busy timeout to zero to make the test run fast
+  RSQLite::sqliteSetBusyHandler(con, 0)
+  con2 <- connect_and_lock(root_dir)
+  defer(dbDisconnect(con2))
+  expect_error(
+    generate_testdata(con = con,
+                      start_time = as.POSIXct("2024-05-24 17:42:00"),
+                      end_time = as.POSIXct("2024-05-24 17:46:00"),
+                      output_dir = tempdir()),
+    "The database is locked. Close Firefox before reading the history."
+  )
+
   skip_on_os("windows")
   output_dir <- file.path(tempdir(), "doesnotexist")
   expect_error(

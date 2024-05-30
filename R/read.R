@@ -29,6 +29,12 @@ read_browser_history <- function(con = NULL,
   local_connection <- connect_local(con, root_dir, profile)
   con <- local_connection$con
 
+  if (is_locked(con)) {
+    cli::cli_abort(
+      "The database is locked. Close Firefox before reading the history."
+    )
+  }
+
   # the history is spread over two tables: moz_historyvisits contains the
   # timestamps, when sites were visited and moz_places contains metadata
   # on those sites. They can be combined using the place_id
