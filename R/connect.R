@@ -40,6 +40,10 @@ connect_history_db <- function(root_dir = guess_root_dir(),
     RSQLite::dbConnect(RSQLite::SQLite(), full_path, flags = RSQLite::SQLITE_RO)
   )
 
+  # increase the timeout in case the database is locked
+  # this should make the probability of a lock small.
+  RSQLite::sqliteSetBusyHandler(con, 5000)
+
   con
 }
 
