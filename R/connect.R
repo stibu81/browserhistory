@@ -48,32 +48,6 @@ connect_history_db <- function(root_dir = guess_root_dir(),
 }
 
 
-# compile the full path to the history database.
-# check that all the directories and the file actually exist.
-
-get_hist_file_path <- function(root_dir,
-                               profile,
-                               error_call = rlang::caller_env()) {
-
-  if (!dir.exists(root_dir)) {
-    cli::cli_abort("The root directory {root_dir} does not exist.",
-                   call = error_call)
-  }
-
-  if (!dir.exists(file.path(root_dir, profile))) {
-    cli::cli_abort("The profile {profile} does not exist.", call = error_call)
-  }
-
-  hist_file <- "places.sqlite"
-  full_path <- file.path(root_dir, profile, hist_file)
-  if (!file.exists(full_path)) {
-    cli::cli_abort("The history database {hist_file} does not exist.")
-  }
-
-  full_path
-}
-
-
 #' List the Available Profiles
 #'
 #' List all the profiles that are contained in a root directory.
@@ -124,34 +98,6 @@ list_profiles <- function(root_dir = guess_root_dir()) {
 }
 
 
-# compile the full path to profiles.ini
-# check that all the directories and the file actually exist.
-
-get_profiles_file_path <- function(root_dir,
-                                   error_call = rlang::caller_env()) {
-
-  if (!dir.exists(root_dir)) {
-    cli::cli_abort("The root directory {root_dir} does not exist.",
-                   call = error_call)
-  }
-
-  prof_file <- "profiles.ini"
-  full_path <- file.path(root_dir, prof_file)
-  if (!file.exists(full_path)) {
-    cli::cli_abort("The directory {root_dir} is not a Firefox root directory.")
-  }
-
-  full_path
-}
-
-
-# helper function that determines for a profile, whether it is the default
-# profile, i.e., whether it has an attribute Default set to 1.
-is_default_profile <- function(profile) {
-  "Default" %in% names(profile) && profile["Default"] == "1"
-}
-
-
 #' Automatically Select a Profile
 #'
 #' Automatically select one of the available profiles. If a profile is marked
@@ -186,28 +132,6 @@ autoselect_profile <- function(root_dir = guess_root_dir()) {
   }
 
   profile
-}
-
-
-# Ensure a connection from within a function. Either, an already existing
-# connection is returned or a new connection is created. The function also
-# returns a logical that indicates whether a local connection has been
-# created or not.
-
-connect_local <- function(con,
-                          root_dir,
-                          profile,
-                          error_call = rlang::caller_env()) {
-
-  is_local <- FALSE
-  if (is.null(con)) {
-    con <- connect_history_db(root_dir, profile)
-    is_local <- TRUE
-  } else if (!inherits(con, "SQLiteConnection") || !RSQLite::dbIsValid(con)) {
-    cli::cli_abort("con is not a valid database connection.", call = error_call)
-  }
-
-  list(con = con, is_local = is_local)
 }
 
 
