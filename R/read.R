@@ -47,21 +47,20 @@ read_browser_history <- function(con = NULL,
     dplyr::left_join(moz_places, by = c("place_id" = "id")) |>
     dplyr::left_join(moz_origins, by = c("origin_id" = "id"))
 
-
-    # simplify the table unless the raw table is requested
-    if (!raw) {
-      hist_combined <- hist_combined |>
-        dplyr::select("id", "visit_date", "url", "title", "visit_count",
-                      "last_visit_date", "description", "prefix", "host")
-    }
-
-    # parse the date columns
+  # simplify the table unless the raw table is requested
+  if (!raw) {
     hist_combined <- hist_combined |>
-      dplyr::collect() |>
-      dplyr::mutate(
-        visit_date = firefox_ts_to_posix(.data$visit_date, tz = tz),
-        last_visit_date = firefox_ts_to_posix(.data$last_visit_date, tz = tz)
-      )
+      dplyr::select("id", "visit_date", "url", "title", "visit_count",
+                    "last_visit_date", "description", "prefix", "host")
+  }
+
+  # parse the date columns
+  hist_combined <- hist_combined |>
+    dplyr::collect() |>
+    dplyr::mutate(
+      visit_date = firefox_ts_to_posix(.data$visit_date, tz = tz),
+      last_visit_date = firefox_ts_to_posix(.data$last_visit_date, tz = tz)
+    )
 
   # disconnect the database if the connection has been created within this
   # function
