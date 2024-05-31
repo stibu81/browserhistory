@@ -14,4 +14,7 @@ test_that("test firefox_ts_to_posix()", {
 test_that("test posix_to_firefox_ts()", {
   expect_equal(posix_to_firefox_ts(ts), ff_ts)
   expect_equal(posix_to_firefox_ts(with_tz(ts, tz = "UTC")), ff_ts)
+
+  expect_equal(posix_to_firefox_ts(as.POSIXlt(ts)), ff_ts)
+  expect_equal(posix_to_firefox_ts(as.POSIXlt(with_tz(ts, tz = "UTC"))), ff_ts)
 })
