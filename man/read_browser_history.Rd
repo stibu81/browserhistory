@@ -8,6 +8,8 @@ read_browser_history(
   con = NULL,
   root_dir = guess_root_dir(),
   profile = autoselect_profile(root_dir),
+  start_time = NULL,
+  end_time = NULL,
   tz = "",
   raw = FALSE
 )
@@ -28,6 +30,9 @@ within the root directory. The names of the available profiles can be listed
 using \code{\link[=list_profiles]{list_profiles()}}. If no profile is specified, the function
 automatically selects a profile called "default", if it is available,
 and the first available profile otherwise.}
+
+\item{start_time, end_time}{POSIXt objects that specifies the time interval
+for which browser history will be returned.}
 
 \item{tz}{character giving the time zone to be used for the conversion of
 the timestamps. The default value \code{""} is the current time zone.

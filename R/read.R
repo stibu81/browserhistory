@@ -8,6 +8,8 @@
 #'   [`connect_history_db()`]. Instead of passing a connection, you can also
 #'   specify a root directory and (optionally) a profile and the function
 #'   will build up the connection automatically.
+#' @param start_time,end_time POSIXt objects that specifies the time interval
+#'  for which browser history will be returned.
 #' @param tz character giving the time zone to be used for the conversion of
 #'   the timestamps. The default value `""` is the current time zone.
 #'   See [time zones][base::timezones] for more information on time zones in R.
@@ -23,8 +25,18 @@
 read_browser_history <- function(con = NULL,
                                  root_dir = guess_root_dir(),
                                  profile = autoselect_profile(root_dir),
+                                 start_time = NULL,
+                                 end_time = NULL,
                                  tz = "",
                                  raw = FALSE) {
+
+  # check inputs
+  if (!is.null(start_time) && !lubridate::is.POSIXt(start_time)) {
+    cli::cli_abort("start_time must be a POSIXt object.")
+  }
+  if (!is.null(end_time) && !lubridate::is.POSIXt(end_time)) {
+    cli::cli_abort("end_time must be a POSIXt object.")
+  }
 
   local_connection <- connect_local(con, root_dir, profile)
   con <- local_connection$con
@@ -42,6 +54,18 @@ read_browser_history <- function(con = NULL,
   moz_places <- dplyr::tbl(con, "moz_places")
   moz_origins <- dplyr::tbl(con, "moz_origins") |>
     dplyr::select("id", "prefix", "host")
+
+  # if a time filter is given, apply it to the visits before joining
+  if (!is.null(start_time)) {
+    start_time_ts <- posix_to_firefox_ts(start_time)
+    moz_visits <- moz_visits |>
+      dplyr::filter(.data$visit_date >= start_time_ts)
+  }
+  if (!is.null(end_time)) {
+    end_time_ts <- posix_to_firefox_ts(end_time)
+    moz_visits <- moz_visits |>
+      dplyr::filter(.data$visit_date <= end_time_ts)
+  }
 
   hist_combined <- moz_visits |>
     dplyr::left_join(moz_places, by = c("place_id" = "id")) |>
