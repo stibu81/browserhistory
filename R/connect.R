@@ -166,6 +166,9 @@ guess_root_dir <- function() {
     app_dir <- Sys.getenv("APPDATA")
     root_dir <- file.path(app_dir, "Mozilla", "Firefox")
     if (dir.exists(root_dir)) return(root_dir)
+  } else if (system == "darwin") {
+    root_dir <- "~/Library/Application Support/Firefox"
+    if (dir.exists(root_dir)) return(root_dir)
   }
 
   return(NA_character_)
