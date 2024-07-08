@@ -7,7 +7,7 @@ Description: Tools to read and analyse Firefox' browser history. Support for
   other browsers may be added in the future.
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 License: MIT + file LICENSE
 Language: en-GB
 Depends:
